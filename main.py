@@ -1,11 +1,14 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from uuid import uuid4, UUID
+
 
 app = FastAPI()
 
 class User(BaseModel):
-    name: str
-    age: int
+    id: UUID = Field(default_factory=uuid4, description="Уникальный идентификатор")
+    name: str = Field(..., max_length=50, description="Имя пользователя")
+    age: int = Field(..., ge=0, le=120, description="Возраст пользователя")
 
 users_db = {}
 user_id_counter = 1
