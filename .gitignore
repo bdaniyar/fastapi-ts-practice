@@ -2,4 +2,4 @@
 __pycache__/
 *.pyc
 .env
-queries/
+queries/.DS_Store
