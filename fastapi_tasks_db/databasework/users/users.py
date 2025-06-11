@@ -1,5 +1,5 @@
 from sqlalchemy import JSON, Column, Computed, Date, ForeignKey, Integer, String
-from databasework.database import Base
+from fastapi_tasks_db.databasework.database import Base
 
 class Users(Base):
     __tablename__ = "users"

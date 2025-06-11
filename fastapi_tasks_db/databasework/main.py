@@ -4,9 +4,13 @@ from datetime import date
 from pydantic import BaseModel
 
 from fastapi_tasks_db.databasework.bookings.router import router as router_bookings
+from fastapi_tasks_db.databasework.users.router import router as router_users
 app = FastAPI()
 
+app.include_router(router_users)
 app.include_router(router_bookings)
+
+
 class SHotel(BaseModel):
     address: str
     name: str
