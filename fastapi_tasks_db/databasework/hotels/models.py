@@ -1,5 +1,5 @@
 from sqlalchemy import JSON, Column, ForeignKey, Integer, String
-from databasework.database import Base
+from fastapi_tasks_db.databasework.database import Base
 
 class Hotels(Base):
     __tablename__ = "hotels"
