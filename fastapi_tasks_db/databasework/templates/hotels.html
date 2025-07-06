@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Booking</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/styles.css') }}">
+</head>
+<body>
+    <div>
+    <h1 class="main-title">Найти отель</h1>
+    <form method="get" action="/pageshotels" class="search-form">
+        <input type="text" name="location" placeholder="Местоположение" required>
+        <label>Дата заезда:</label>
+        <input type="date" name="date_from" required>
+        <label>Дата выезда:</label>
+        <input type="date" name="date_to" required>
+        <button type="submit">Найти</button>
+    </form>
+    {% for hotel in hotels %}
+    <div class="hotel-card">
+        <img src="{{ url_for('static', path='images/' ~ hotel.image_id|string ~ '.webp') }}" alt="Фото отеля" width="200">
+        <div class="hotel-info">
+            <h2 class="hotel-title">{{ hotel.name }}</h2>
+            <p class="hotel-location">{{ hotel.location }}</p>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+    {% for hotel in hotels %}
+    <div style="display:flex; margin-bottom: 15px; margin-left: 300px;">
+        <img src="{{ url_for('static', path='images/' ~ hotel.image_id|string ~ '.webp') }}" alt="Фото отеля" width="200">
+        <div>
+            <h1>{{hotel.name}}</h1>
+            <h4>{{hotel.location}}</h4>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+</body>
+</html> -->

@@ -11,7 +11,7 @@ class BookingDAO(BaseDAO):
     model = Bookings
 
     @classmethod
-    async def add(
+    async def add_booking(
         cls,
         user_id: int,
         rooms_id: int,
@@ -81,4 +81,43 @@ class BookingDAO(BaseDAO):
             return new_booking.scalar()
         else:
             return None
+        
+    @classmethod
+    async def find_all_by_user(cls, user_id: int):
+        async with async_session_maker() as session:
+            query = (
+                select(Bookings, Rooms)
+                .join(Rooms, Bookings.rooms_id == Rooms.id)
+                .where(Bookings.user_id == user_id)
+                .order_by(Bookings.date_from)
+            )
+            result = await session.execute(query)
+            return result.all()
+        
+    @classmethod
+    async def delete_by_id(cls, booking_id: int) -> bool:
+        async with async_session_maker() as session:
+            query = delete(Bookings).where(Bookings.id == booking_id)
+            result = await session.execute(query)
+            await session.commit()
+            return result.rowcount > 0
 
+    @classmethod
+    async def get_bookings_with_room_info(cls, user_id: int):
+        async with async_session_maker() as session:
+            query = (
+                select(
+                    Bookings,
+                    Rooms.image_id,
+                    Rooms.name,
+                    Rooms.description,
+                    Rooms.services,
+                    Rooms.price,
+                    (Bookings.date_to - Bookings.date_from).label("total_days"),
+                    ((Bookings.date_to - Bookings.date_from) * Rooms.price).label("total_cost"),
+                )
+                .join(Rooms, Rooms.id == Bookings.rooms_id)
+                .where(Bookings.user_id == user_id)
+            )
+            result = await session.execute(query)
+            return result.all()
