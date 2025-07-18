@@ -1,18 +1,17 @@
-from logging.config import fileConfig
 import sys
+from logging.config import fileConfig
 from os.path import abspath, dirname
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
 
 from alembic import context
+from sqlalchemy import engine_from_config, pool
 
-sys.path.insert(0,dirname(dirname(dirname(abspath(__file__)))))
-from fastapi_tasks_db.databasework.config import settings
+sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
+from databasework.bookings.m import Bookings
 from databasework.database import Base
 from databasework.hotels.models import Hotels, Rooms
-from databasework.bookings.m import Bookings
 from databasework.users.users import Users
 
+from fastapi_tasks_db.databasework.config import settings
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -20,7 +19,7 @@ config = context.config
 
 config.set_main_option(
     "sqlalchemy.url",
-    f"postgresql+psycopg://{settings.DB_USER}:{settings.DB_PASS}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
+    f"postgresql+psycopg://{settings.DB_USER}:{settings.DB_PASS}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}",
 )
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -77,9 +76,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

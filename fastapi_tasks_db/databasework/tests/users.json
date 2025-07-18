@@ -1,0 +1,14 @@
+[
+    {
+        "email": "user@example.com",
+        "hashed_password": "$2b$12$bin1.HY2cfXucV.hQ/ysfO0xD4ABaQ6DbS6u9M5UtEMZ6elrT8Xvy"
+    },
+    {
+        "email": "anna@example.com",
+        "hashed_password": "$2b$12$ceg3kEXGWxsZsWikztyapOMu0fDdcpXij4tofxzZ8JKWRxhddXX/y"
+    },
+    {
+        "email": "petr@domain.ru",
+        "hashed_password": "$2b$12$7DAU5US1afhpzGiZTjHUTOrVnpZsREcBi/WLskqMnK/kfc7gNlWQK"
+    }
+]

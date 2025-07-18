@@ -1,10 +1,13 @@
 from datetime import datetime, timezone
-from jose import jwt, JWTError
-from fastapi import APIRouter, HTTPException, Response, status
-from fastapi import Depends, HTTPException, Request
+
+from fastapi import (APIRouter, Depends, HTTPException, Request, Response,
+                     status)
+from jose import JWTError, jwt
 
 from fastapi_tasks_db.databasework.config import settings
-from fastapi_tasks_db.databasework.exceptions import IncorrectTokenFormatException, TokenAbsentException, TokenExpiredExceptions, UserIsNotPresentException
+from fastapi_tasks_db.databasework.exceptions import (
+    IncorrectTokenFormatException, TokenAbsentException,
+    TokenExpiredExceptions, UserIsNotPresentException)
 from fastapi_tasks_db.databasework.users.dao import UsersDAO
 from fastapi_tasks_db.databasework.users.users import Users
 
@@ -15,11 +18,10 @@ def get_token(request: Request):
         raise TokenAbsentException
     return token
 
+
 async def get_current_user(token: str = Depends(get_token)):
     try:
-        payload  = jwt.decode(
-            token, settings.SECRET_KEY, settings.ALGORITHM
-        )
+        payload = jwt.decode(token, settings.SECRET_KEY, settings.ALGORITHM)
 
     except JWTError:
         raise IncorrectTokenFormatException
@@ -27,7 +29,7 @@ async def get_current_user(token: str = Depends(get_token)):
     now_ts = int(datetime.now(tz=timezone.utc).timestamp())
     if (not expire) or (int(expire) < now_ts):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
-    
+
     sub = payload.get("sub")
     if sub is None:
         raise TokenExpiredExceptions

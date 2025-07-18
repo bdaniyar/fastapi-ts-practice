@@ -1,7 +1,9 @@
-from pydantic import BaseModel, ConfigDict
-from pydantic import BaseModel
 from datetime import date
 from typing import List
+
+from pydantic import BaseModel, ConfigDict
+
+
 class SHotel(BaseModel):
     id: int
     name: str
@@ -10,6 +12,9 @@ class SHotel(BaseModel):
     rooms_quantity: int
     image_id: int
     rooms_left: int
+
+    model_config = ConfigDict(from_attributes=True)
+
 
 class SRoomInfo(BaseModel):
     id: int
@@ -25,6 +30,7 @@ class SRoomInfo(BaseModel):
 
     class Config:
         from_attributes = True
+
 
 class SBookingInfo(BaseModel):
     room_id: int

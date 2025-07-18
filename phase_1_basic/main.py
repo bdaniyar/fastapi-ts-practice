@@ -1,22 +1,26 @@
+from uuid import UUID, uuid4
+
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
-from uuid import uuid4, UUID
-
 
 app = FastAPI()
+
 
 class User(BaseModel):
     id: UUID = Field(default_factory=uuid4, description="Уникальный идентификатор")
     name: str = Field(..., max_length=50, description="Имя пользователя")
     age: int = Field(..., ge=0, le=120, description="Возраст пользователя")
 
+
 users_db = {}
 user_id_counter = 1
+
 
 # GET — Получить данные
 @app.get("/")
 async def read_root():
     return {"message": "Привет, мир!"}
+
 
 # GET с параметром
 @app.get("/users/{user_id}")
@@ -25,6 +29,7 @@ async def get_user(user_id: int):
     if user:
         return {"user_id": user_id, "user": user}
     return {"error": "Пользователь не найден"}
+
 
 # POST — Отправить данные
 @app.post("/users")
@@ -35,6 +40,7 @@ async def create_user(user: User):
     user_id_counter += 1
     return response
 
+
 # PUT — Обновить данные
 @app.put("/users/{user_id}")
 async def update_user(user_id: int, updated_user: User):
@@ -42,6 +48,7 @@ async def update_user(user_id: int, updated_user: User):
         users_db[user_id] = updated_user
         return {"message": f"Пользователь {user_id} обновлён", "user": updated_user}
     return {"error": "Пользователь не найден"}
+
 
 # DELETE — Удалить пользователя
 @app.delete("/users/{user_id}")

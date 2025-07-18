@@ -1,14 +1,24 @@
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy import NullPool
+from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
+                                    create_async_engine)
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
-from sqlalchemy.ext.asyncio import async_sessionmaker
+
 from fastapi_tasks_db.databasework.config import settings
 
-engine = create_async_engine(settings.DATABASE_URL_ASYNC)
+if settings.MODE == "TEST":
+    DATABASE_URL = settings.TEST_DATABASE_URL_ASYNC
+    DATABASE_PARAMS = {"poolclass": NullPool}
+else:
+    DATABASE_URL = settings.DATABASE_URL_ASYNC
+    DATABASE_PARAMS = {}
+engine = create_async_engine(DATABASE_URL, **DATABASE_PARAMS)
 
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
+
 class Base(DeclarativeBase):
     pass
+
 
 """
 Файл database.py мы создавали для настройки подключения к базе данных и создания базового класса моделей. Он нужен, чтобы централизованно управлять соединением с БД в проекте на SQLAlchemy + FastAPI.

@@ -1,0 +1,23 @@
+[
+    {
+        "name": "Cosmos Collection Altay Resort",
+        "location": "Республика Алтай, Майнинский район, село Урлу-Аспак, Лесхозная улица, 20",
+        "services": ["Wi-Fi", "Парковка", "Бассейн"],
+        "rooms_quantity": 20,
+        "image_id": 1
+    },
+    {
+        "name": "Baikal View Hotel",
+        "location": "Ольхон, Байкал, Иркутская область",
+        "services": ["Wi-Fi", "Ресторан"],
+        "rooms_quantity": 15,
+        "image_id": 2
+    },
+    {
+        "name": "Rosa Springs Hotel",
+        "location": "Красная Поляна, Сочи",
+        "services": ["Wi-Fi", "СПА", "Фитнес"],
+        "rooms_quantity": 30,
+        "image_id": 3
+    }
+]
