@@ -1,8 +1,6 @@
 import smtplib
 from pathlib import Path
-from time import sleep, time
 
-from fastapi import BackgroundTasks
 from PIL import Image
 from pydantic import EmailStr
 

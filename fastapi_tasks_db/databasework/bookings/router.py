@@ -5,20 +5,24 @@ from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from fastapi_tasks_db.databasework.bookings.dao import BookingDAO
 from fastapi_tasks_db.databasework.bookings.schemas import SBooking
 from fastapi_tasks_db.databasework.database import async_session_maker
+from fastapi_tasks_db.databasework.exceptions import RoomCannotBeBooked
 from fastapi_tasks_db.databasework.hotels.schemas import SBookingInfo
 from fastapi_tasks_db.databasework.tasks.tasks import \
     send_booking_confirmation_email
 from fastapi_tasks_db.databasework.users.dependencies import get_current_user
+from fastapi_versioning import  version
 
 router = APIRouter(prefix="/bookings", tags=["Бронирования"])
 
 
 @router.get("")
+@version(1)
 async def get_bookings(user=Depends(get_current_user)):  # -> list[SBooking]:
     return await BookingDAO.find_all(user_id=user.id)
 
 
 @router.post("")
+@version(2)
 async def add_booking(
     background_tasks: BackgroundTasks,
     rooms_id: int,
@@ -28,7 +32,7 @@ async def add_booking(
 ):
     booking = await BookingDAO.add_booking(user.id, rooms_id, date_from, date_to)
     if not booking:
-        raise HTTPException(status_code=409, detail="Booking could not be created")
+        raise RoomCannotBeBooked
     booking_dict = SBooking.model_validate(booking).model_dump()
     # send_booking_confirmation_email.delay(booking_dict, user.email)
     background_tasks.add_task(send_booking_confirmation_email, booking_dict, user.email)
@@ -57,6 +61,7 @@ async def get_user_bookings(user=Depends(get_current_user)):
 
 
 @router.delete("/{booking_id}", status_code=204)
+@version(1)
 async def delete_booking(booking_id: int, user=Depends(get_current_user)):
     deleted = await BookingDAO.delete_by_id(booking_id, user.id)
     if not deleted:

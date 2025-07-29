@@ -2,6 +2,16 @@
 __pycache__/
 *.pyc
 .env
+.env-non-dev
 queries/
 .DS_Store
 **/.DS_Store
+
+# Docker
+*.log
+docker-compose.override.yml
+docker-data/
+volumes/
+
+prometheusdata/
+grafanadata/

@@ -6,10 +6,10 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
-from databasework.bookings.m import Bookings
+from databasework.bookings.m import Bookings  # noqa
 from databasework.database import Base
-from databasework.hotels.models import Hotels, Rooms
-from databasework.users.users import Users
+from databasework.hotels.models import Hotels, Rooms  # noqa
+from databasework.users.users import Users  # noqa
 
 from fastapi_tasks_db.databasework.config import settings
 
