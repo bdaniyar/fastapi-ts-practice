@@ -6,6 +6,7 @@ __pycache__/
 queries/
 .DS_Store
 **/.DS_Store
+.env*
 
 # Docker
 *.log
