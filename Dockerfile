@@ -1,4 +1,4 @@
- FROM python:3.11
+FROM python:3.11
 
  RUN mkdir /booking
 
@@ -12,4 +12,4 @@
 
  RUN chmod a+x /booking/docker/*.sh
 
- CMD ["gunicorn", "fastapi_tasks_db.databasework.main:app", "--workers", "1", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind=0.0.0.0:8000"]
+ CMD ["./docker/app.sh"]
